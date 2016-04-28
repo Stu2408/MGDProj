@@ -2,14 +2,6 @@
  * Created by Tyrion on 18/03/2016.
  */
 
-var NUM_COLS,               // number of tiles across
-    NUM_ROWS,               // number of tiles down
-    TILE_SIZE = 16,         // tiles are square 16x16 - change if needed
-    tileSet,                // main object to manage tiles
-    context,                // ...and its 2D drawing context
-    //SERVICE_URL = "http://mcm-game-server.appspot.com",
-    players,                // Reference to the list of players
-    SERVICE_URL = "http://localhost:11080";
 
 var fb = new Firebase("https://switchboardmgd.firebaseio.com/"),
     locations = { },
@@ -22,81 +14,55 @@ if (fb) {
         var data = sn.val();
         console.dir({'added': data});
         locations[sn.key()] = data;
-        showLocations();
+       //showLocations();
     });
     fbLocation.on('child_changed', function(sn){
         var data = sn.val();
         locations[sn.key()] = data;
         console.dir({'moved': data})
-        showLocations();
+       // showLocations();
     });
     fbLocation.on('child_removed', function(sn){
         var data = sn.val();
         delete locations[sn.key()];
         console.dir(({'removed': data}));
-        showLocations();
+      //  showLocations();
     });
 }
 
-function getKey(name1, name2){
+function randName(){
+    var i = 0;
+    while(getKey(i)){
+        i++;
+    }
+    return i;
+}
+
+function getKey(name){
     var loc;
     for(loc in locations){
-        if(locations[loc].player1 === name1){
-            return loc;
-        }
-    } for(loc in locations){
-        if(locations[loc].player2 === name2){
+        if(locations[loc].player === name){
             return loc;
         }
     }
     return null;
 }
 
-/*function getCellCoords(e) {
-    var x = e.pageX - canvas.offsetLeft,
-        y = e.pageY - canvas.offsetTop;
-
-    x = Math.floor(x / TILE_SIZE);
-    y = Math.floor(y / TILE_SIZE);
-    return {
-        col: x,
-        row: y
-    }
-}*/
-
-function addLocation(name1, name2){
+function addLocation(name){
     //to prevent a duplicate name occurring
-    if(getKey(name1)) return;
+    if(getKey(name)) return;
     //name is valid, continue to add it
     fb.child("/location").push({
-        player1: name1,
-        timestamp: Firebase.ServerValue.TIMESTAMP
-    }, function(err){
-        if(err) console.dir(err);
-    });
-    if(getKey(name2)) return;
-    fb.child("/location").push({
-        player2: name2,
+        player: name,
         timestamp: Firebase.ServerValue.TIMESTAMP
     }, function(err){
         if(err) console.dir(err);
     });
 }
 
-function updateLocation(ref, name1, name2){
+function updateLocation(ref, name){
     fb.child("/location/" + ref).set({
-        player1: name1,
-        timestamp: Firebase.ServerValue.TIMESTAMP
-    }, function(err) {
-        if(err) {
-            console.dir(err);
-        }
-    });
-}
-
-function updateLocation(ref, name1, name2){
-    fb.child("/location/" + ref).set({
-        player1: name1,
+        player: name,
         timestamp: Firebase.ServerValue.TIMESTAMP
     }, function(err) {
         if(err) {
@@ -133,25 +99,31 @@ function removeLocation(ref){
  updateLocation(getKey(player.name), player.name, cell_loc.col, cell_loc.row);
  });*/
 
+var board, s1,s2,s3,s4,s5, player;
+
+function board(){
+
+}
+
+board.prototype.load = function(img){
+    this.image = new Image();
+    this.image.src = img;
+}
+
 
 document.getElementById("enter1").addEventListener("click", function(){
 //document.getElementById("canvas").onmouseup = function(evt) {
-    var name1;
-    name1 = document.getElementById('name1').value;
-    if(!getKey(name1))
-        addLocation(name1); //cell_loc.col, cell_loc.row)//
-    else
-        updateLocation(getKey(name1), name1); //cell_loc.col, cell_loc.row);//
-});
+    var name;
+    name = randName();
+    if(name < 6){
+        if(!getKey(name)){
+            addLocation(name);
 
-document.getElementById("enter2").addEventListener("click", function(){
-//document.getElementById("canvas").onmouseup = function(evt) {
-    var name2;
-    name2 = document.getElementById('name2').value;
-    if(!getKey(name2))
-        addLocation(name2); //cell_loc.col, cell_loc.row)//
-    else
-        updateLocation(getKey(name2), name2); //cell_loc.col, cell_loc.row);//
+        }
+
+        else
+            updateLocation(getKey(name), name); //cell_loc.col, cell_loc.row);//
+    }
 });
 
 
@@ -174,10 +146,7 @@ function showLocations(){
 */
 
 document.getElementById("exit").addEventListener("click", function(){
-    var name1, name2;
-    name1 = document.getElementById('name1').value;
-    removeLocation(getKey(name1));
-
-    name2 = document.getElementById('name2').value;
-    removeLocation(getKey(name2));
+    var name;
+    name = document.getElementById('name').value;
+    removeLocation(getKey(name));
 });
