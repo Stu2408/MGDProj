@@ -118,11 +118,14 @@ document.getElementById("enter1").addEventListener("click", function(){
     if(name < 6){
         if(!getKey(name)){
             addLocation(name);
-
         }
-
         else
             updateLocation(getKey(name), name); //cell_loc.col, cell_loc.row);//
+    }
+    else // if name > 6
+    {
+        console.log("Player failed to join the game as game is full");
+        alert("Game is full!")
     }
 });
 
