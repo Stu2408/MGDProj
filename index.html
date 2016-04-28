@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--suppress ALL, JSUnresolvedFunction -->
+<html>
+<head>
+    <title>SWITCHBOARD - JavaScript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css"/>
+    <style>
+        .ui-mobile [data-role="page"] {
+            box-sizing: border-box !important;
+            border: 0px solid #e6e6e6 !important;
+            height: 100% !important;
+        }
+        .ui-mobile [data-role="header"] {
+            box-sizing: border-box !important;
+            border: 0px solid #e6e6e6 !important;
+            border-bottom: none !important;
+        }
+        .ui-mobile [data-role="footer"] {
+            box-sizing: border-box !important;
+            border: 0px solid #e6e6e6 !important;
+            border-top: none !important;
+        }
+    </style>
+</head>
+<body>
+
+
+<p style="text-align:center;"><img src="images/title2.bmp"></p>
+
+    <div class="wrapper">
+        <label for="name1">P1:</label><input type="text" id="name1"/>
+        <button id="enter1">Start1</button><br/><br/><br/>
+        <label for="name2">P2:</label><input type="text" id="name2"/>
+        <button id="enter2">Start2</button><br/><br/><br/>
+        <button id="exit">Exit</button><br/><br/><br/>
+        <canvas id="canvas" width="400" height="300" style="border: solid"></canvas>
+        <textarea id="result" cols="60" rows="10"></textarea>
+    </div>
+<!--<label for="x">X:</label><input type="number" id="x"/><br/>-->
+<!--<label for="y">Y:</label><input type="number" id="y"/><br/>-->
+<!--<button id="post">Post Data</button><br/><br/>-->
+<!--<button id="remove">Remove Data</button><br/>-->
+</body>
+<script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
+<script src="tileset.js"></script>
+<script src="switchboard.js"></script>
+</html>
